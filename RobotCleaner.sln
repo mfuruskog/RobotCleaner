@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotCleaner", "RobotCleaner\RobotCleaner.csproj", "{E2FDFFFC-1E06-4176-A698-C82B0F510202}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RobotCleaner.Tests", "RobotCleaner.Tests\RobotCleaner.Tests.csproj", "{FAF4AE7C-2441-4213-A77A-7591CDB30B81}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E2FDFFFC-1E06-4176-A698-C82B0F510202}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2FDFFFC-1E06-4176-A698-C82B0F510202}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2FDFFFC-1E06-4176-A698-C82B0F510202}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2FDFFFC-1E06-4176-A698-C82B0F510202}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAF4AE7C-2441-4213-A77A-7591CDB30B81}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAF4AE7C-2441-4213-A77A-7591CDB30B81}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAF4AE7C-2441-4213-A77A-7591CDB30B81}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAF4AE7C-2441-4213-A77A-7591CDB30B81}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {AFA17540-E134-4EF4-BB42-6DF33BAFAD75}
+	EndGlobalSection
+EndGlobal
