@@ -8,24 +8,22 @@ namespace RobotCleaner
     {
         static void Main(string[] args)
         {
-            List<RobotCommand> commands = new List<RobotCommand>();
+            var commands = new List<RobotCommand>();
 
-            int numberOfCommands = Int32.Parse(Console.ReadLine());
+            var numberOfCommands = Int32.Parse(Console.ReadLine());
 
-            int[] initialPosition = Console.ReadLine().Split(' ').Select(i => Int32.Parse(i)).ToArray();
+            var initialPosition = Console.ReadLine().Split(' ').Select(i => Int32.Parse(i)).ToArray();
 
             for (int i = 0; i < numberOfCommands; i++)
             {
-                string[] command = Console.ReadLine().Split(' ');
+                var command = Console.ReadLine().Split(' ');
                 commands.Add(new RobotCommand(command[0].ToCharArray()[0], Int32.Parse(command[1])));
             }
 
-            Robot robot = new Robot(new Coordinates(initialPosition[0], initialPosition[1]));
-            CleaningService cleaning = new CleaningService(robot);
+            var robot = new Robot(new Coordinates(initialPosition[0], initialPosition[1]));
+            robot.InitiateCleaning(commands);
 
-            cleaning.InitiateCleaning(commands);
-
-            Console.WriteLine($"=> Cleaned: {cleaning.NrOfCleaningPlaces}");
+            Console.WriteLine($"=> Cleaned: {robot.NrOfCleaningPlaces}");
 
         }
     }
