@@ -6,6 +6,14 @@ namespace RobotCleaner
 {
     public class Line
     {
+        public Line(Coordinates start, Coordinates end)
+        {
+            _coordinatorComparer = new CoordinatesComparer();
+            Start = start;
+            End = end;
+            Orientation = Start.X == End.X ? OrientationEnum.Vertical : OrientationEnum.Horizontal;
+        }
+
         private readonly CoordinatesComparer _coordinatorComparer;
         public Coordinates Start { get; }
         public Coordinates End { get; }
@@ -23,20 +31,12 @@ namespace RobotCleaner
             Vertical
         }
 
-        public Line(Coordinates start, Coordinates end)
-        {
-            _coordinatorComparer = new CoordinatesComparer();
-            Start = start;
-            End = end;
-            Orientation = Start.X == End.X ? OrientationEnum.Vertical : OrientationEnum.Horizontal;
-        }
-
         public List<Coordinates> GetIntersections(Line line)
         {
             if (Orientation == line.Orientation)
             {
                 if (IsOverlappingWithParallelLine(line))
-                    return GetIntersectionWithOverlappingLine(line);
+                    return GetIntersectionsWithOverlappingLine(line);
                 else
                     return new List<Coordinates>();
             }
@@ -44,7 +44,7 @@ namespace RobotCleaner
             return GetIntersectionWithNonParallelLine(line);
         }
 
-        private List<Coordinates> GetIntersectionWithOverlappingLine(Line line)
+        private List<Coordinates> GetIntersectionsWithOverlappingLine(Line line)
         {
             return GetCoordinates().Intersect(line.GetCoordinates(), _coordinatorComparer).ToList();
         }

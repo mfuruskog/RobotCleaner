@@ -7,15 +7,15 @@ namespace RobotCleaner
 {
     public class Robot
     {
-        private List<Line> _cleaningLines;
-        public Coordinates Location { get; private set; }
+        private readonly List<Line> _cleaningLines;
+        public Coordinates Position { get; private set; }
 
         public int NrOfCleaningPlaces { get; private set; }
 
-        public Robot(Coordinates initialLocation)
+        public Robot(Coordinates initialPosition)
         {
             _cleaningLines = new List<Line>();
-            Location = initialLocation;
+            Position = initialPosition;
             NrOfCleaningPlaces = 0;
         }
 
@@ -23,39 +23,40 @@ namespace RobotCleaner
         {
             for (int i = 0; i < commands.Count; i++)
             {
-                var startPosition = new Coordinates(Location.X, Location.Y);
+                var intersections = new List<Coordinates>();
+
+                var startPosition = new Coordinates(Position.X, Position.Y);
 
                 Move(commands[i]);
 
-                var endPosition = new Coordinates(Location.X, Location.Y);
-                var currentLine = new Line(startPosition, endPosition);
-                var overlaps = new List<Coordinates>();
+                var endPosition = new Coordinates(Position.X, Position.Y);
+                var cleaningLine = new Line(startPosition, endPosition);
 
                 foreach (var line in _cleaningLines)
                 {
-                    overlaps.AddRange(currentLine.GetIntersections(line));
+                    intersections.AddRange(cleaningLine.GetIntersections(line));
                 }
 
-                NrOfCleaningPlaces += commands[i].Steps + 1 - overlaps.Distinct(new CoordinatesComparer()).Count();
-                _cleaningLines.Add(currentLine);
+                NrOfCleaningPlaces += commands[i].Steps + 1 - intersections.Distinct(new CoordinatesComparer()).Count();
+                _cleaningLines.Add(cleaningLine);
 
             }
         }
-        public void Move(RobotCommand command)
+        private void Move(RobotCommand command)
         {
             switch (command.Direction)
             {
                 case 'N':
-                    Location.Y += command.Steps;
+                    Position.Y += command.Steps;
                     break;
                 case 'E':
-                    Location.X += command.Steps;
+                    Position.X += command.Steps;
                     break;
                 case 'S':
-                    Location.Y -= command.Steps;
+                    Position.Y -= command.Steps;
                     break;
                 case 'W':
-                    Location.X -= command.Steps;
+                    Position.X -= command.Steps;
                     break;
                 default:
                     break;

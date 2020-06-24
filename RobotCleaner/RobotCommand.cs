@@ -11,7 +11,8 @@ namespace RobotCleaner
             Direction = direction;
             Steps = steps;
         }
-        public char Direction { get; private set; }
-        public int Steps { get; private set; }
+
+        public char Direction { get; }
+        public int Steps { get; }
     }
 }
