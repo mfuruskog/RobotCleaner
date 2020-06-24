@@ -36,23 +36,24 @@ namespace RobotCleaner
             var coordinatesComparer = new CoordinatesComparer();
             var intersections = new List<Coordinates>();
             if (coordinatesComparer.Equals(Start, line2.End))
-                intersections.Add(new Coordinates(Start.X, End.Y));
+                intersections.Add(new Coordinates(Start.X, Start.Y));
             else if (coordinatesComparer.Equals(End, line2.Start))
-                intersections.Add(new Coordinates(Start.X, End.Y));
+                intersections.Add(new Coordinates(End.X, End.Y));
             else
             {
                 var det = (double)(A * line2.B - line2.A * B);
                 if (det != 0)
                 {
-                    var x = Convert.ToInt32((line2.B * C - B * line2.C) / det);
-                    var y = Convert.ToInt32((A * line2.C - line2.A * C) / det);
+                    var intersection = new Coordinates(
+                        Convert.ToInt32((line2.B * C - B * line2.C) / det),
+                        Convert.ToInt32((A * line2.C - line2.A * C) / det));
 
-                    if (Math.Min(Start.X, End.X) <= x && x <= Math.Max(Start.X, End.X) && Math.Min(Start.Y, End.Y) <= y && y <= Math.Max(Start.Y, End.Y))
+                    if (line2.IsCoordinatesOnLine(intersection) && IsCoordinatesOnLine(intersection))
                     {
-                        intersections.Add(new Coordinates(x, y));
+                        intersections.Add(intersection);
                     }
                 }
-            }           
+            }
 
             return intersections;
         }
@@ -63,7 +64,7 @@ namespace RobotCleaner
 
             if (Orientation == line2.Orientation)
             {
-                if (Orientation == OrientationEnum.Vertical && (Start.X != line2.Start.X || 
+                if (Orientation == OrientationEnum.Vertical && (Start.X != line2.Start.X ||
                     (Math.Max(Start.Y, End.Y) < Math.Min(line2.Start.Y, line2.End.Y) || Math.Max(line2.Start.Y, line2.End.Y) < Math.Min(Start.Y, End.Y))))
                     return intersections;
                 if (Orientation == OrientationEnum.Horizontal && (Start.Y != line2.Start.Y ||
@@ -87,6 +88,11 @@ namespace RobotCleaner
 
             var lineX = Enumerable.Range(Math.Min(Start.X, End.X), Math.Abs(Start.X - End.X) + 1);
             return lineX.Select(x => new Coordinates(x, Start.Y));
+        }
+
+        private bool IsCoordinatesOnLine(Coordinates c)
+        {
+            return Math.Min(Start.X, End.X) <= c.X && c.X <= Math.Max(Start.X, End.X) && Math.Min(Start.Y, End.Y) <= c.Y && c.Y <= Math.Max(Start.Y, End.Y);
         }
     }
 
