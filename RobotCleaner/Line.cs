@@ -16,13 +16,12 @@ namespace RobotCleaner
             Vertical
 
         }
-        public Coordinates Start { get; private set; }
-        public Coordinates End { get; private set; }
-        public OrientationEnum Orientation { get; set; }
+        public Coordinates Start { get; }
+        public Coordinates End { get; }
+        public OrientationEnum Orientation { get; }
         public int A => End.Y - Start.Y;
         public int B => Start.X - End.X;
         public int C => A * Start.X + B * Start.Y;
-        public bool IsVertical => Start.X == End.X;
 
         public Line(Coordinates start, Coordinates end)
         {

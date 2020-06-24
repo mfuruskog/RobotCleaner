@@ -13,18 +13,18 @@ namespace RobotCleaner.Tests
         {
             var line = new Line(new Coordinates(startX, startY), new Coordinates(endX, endY));
 
-            Assert.True(line.IsVertical);
+            Assert.Equal(Line.OrientationEnum.Vertical, line.Orientation);
         }
 
         [Theory]
         [InlineData(3, 0, 13, 0)]
         [InlineData(-123, -22, 144, -22)]
         [InlineData(44, 133, 1330, 133)]
-        public void IsVertical_HorizontalLines_ReturnFalse(int startX, int startY, int endX, int endY)
+        public void IsVertical_HorizontalLines_ReturnTrue(int startX, int startY, int endX, int endY)
         {
             var line = new Line(new Coordinates(startX, startY), new Coordinates(endX, endY));
 
-            Assert.False(line.IsVertical);
+            Assert.Equal(Line.OrientationEnum.Horizontal, line.Orientation);
         }
 
         [Theory]
