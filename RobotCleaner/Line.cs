@@ -35,13 +35,18 @@ namespace RobotCleaner
         {
             if (Orientation == line.Orientation)
             {
-                if (HasOverlapsWithParallelLine(line))
-                    return GetCoordinates().Intersect(line.GetCoordinates(), _coordinatorComparer).ToList();
+                if (IsOverlappingWithParallelLine(line))
+                    return GetIntersectionWithOverlappingLine(line);
                 else
                     return new List<Coordinates>();
             }
 
             return GetIntersectionWithNonParallelLine(line);
+        }
+
+        private List<Coordinates> GetIntersectionWithOverlappingLine(Line line)
+        {
+            return GetCoordinates().Intersect(line.GetCoordinates(), _coordinatorComparer).ToList();
         }
 
         private List<Coordinates> GetIntersectionWithNonParallelLine(Line line)
@@ -80,7 +85,7 @@ namespace RobotCleaner
         {
             return Math.Min(Start.X, End.X) <= c.X && c.X <= Math.Max(Start.X, End.X) && Math.Min(Start.Y, End.Y) <= c.Y && c.Y <= Math.Max(Start.Y, End.Y);
         }
-        private bool HasOverlapsWithParallelLine(Line line)
+        private bool IsOverlappingWithParallelLine(Line line)
         {
             if (Orientation == OrientationEnum.Vertical && (Start.X != line.Start.X ||
                     (Math.Max(Start.Y, End.Y) < Math.Min(line.Start.Y, line.End.Y) || Math.Max(line.Start.Y, line.End.Y) < Math.Min(Start.Y, End.Y))))
