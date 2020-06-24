@@ -31,68 +31,62 @@ namespace RobotCleaner
             Orientation = Start.X == End.X ? OrientationEnum.Vertical : OrientationEnum.Horizontal;
         }
 
-        public List<Coordinates> GetIntersectionOfNonParallelLines(Line line2)
+        public List<Coordinates> GetIntersections(Line line)
+        {
+            if (Orientation == line.Orientation)
+            {
+                if (HasOverlapsWithParallelLine(line))
+                    return GetCoordinates().Intersect(line.GetCoordinates(), _coordinatorComparer).ToList();
+                else
+                    return new List<Coordinates>();
+            }
+
+            return GetIntersectionWithNonParallelLine(line);
+        }
+
+        private List<Coordinates> GetIntersectionWithNonParallelLine(Line line)
         {
             var intersections = new List<Coordinates>();
 
-            if (_coordinatorComparer.Equals(Start, line2.End))
+            if (_coordinatorComparer.Equals(Start, line.End))
                 intersections.Add(new Coordinates(Start.X, Start.Y));
-            else if (_coordinatorComparer.Equals(End, line2.Start))
+            else if (_coordinatorComparer.Equals(End, line.Start))
                 intersections.Add(new Coordinates(End.X, End.Y));
             else
             {
-                var intersection = CalculateIntersection(line2);
-                if (line2.IsCoordinatesOnLine(intersection) && IsCoordinatesOnLine(intersection))
+                var intersection = CalculateIntersection(line);
+                if (line.IsCoordinatesOnLine(intersection) && IsCoordinatesOnLine(intersection))
                     intersections.Add(intersection);
             }
 
             return intersections;
         }
 
-        public List<Coordinates> GetIntersections(Line line2)
-        {
-            if (Orientation == line2.Orientation)
-            {
-                if (HasOverlapsWithParallelLine(line2))
-                    return GetCoordinates().Intersect(line2.GetCoordinates(), _coordinatorComparer).ToList();
-                else
-                    return new List<Coordinates>();
-            }
-
-            return GetIntersectionOfNonParallelLines(line2);
-        }
-
         private IEnumerable<Coordinates> GetCoordinates()
         {
-
             if (Orientation == OrientationEnum.Vertical)
-            {
-                var lineY = Enumerable.Range(Math.Min(Start.Y, End.Y), Math.Abs(End.Y - Start.Y) + 1);
-                return lineY.Select(y => new Coordinates(Start.X, y));
-            }
-
-            var lineX = Enumerable.Range(Math.Min(Start.X, End.X), Math.Abs(Start.X - End.X) + 1);
-            return lineX.Select(x => new Coordinates(x, Start.Y));
+                return Enumerable.Range(Math.Min(Start.Y, End.Y), Math.Abs(End.Y - Start.Y) + 1).Select(y => new Coordinates(Start.X, y));
+            return Enumerable.Range(Math.Min(Start.X, End.X), Math.Abs(Start.X - End.X) + 1).Select(x => new Coordinates(x, Start.Y));
         }
-        private Coordinates CalculateIntersection(Line line2)
+        private Coordinates CalculateIntersection(Line line)
         {
-            var determinant = (double)(A * line2.B - line2.A * B);
+            var determinant = (double)(A * line.B - line.A * B);
 
             return new Coordinates(
-                Convert.ToInt32((line2.B * C - B * line2.C) / determinant),
-                Convert.ToInt32((A * line2.C - line2.A * C) / determinant));
+                Convert.ToInt32((line.B * C - B * line.C) / determinant),
+                Convert.ToInt32((A * line.C - line.A * C) / determinant));
         }
         private bool IsCoordinatesOnLine(Coordinates c)
         {
             return Math.Min(Start.X, End.X) <= c.X && c.X <= Math.Max(Start.X, End.X) && Math.Min(Start.Y, End.Y) <= c.Y && c.Y <= Math.Max(Start.Y, End.Y);
         }
-        private bool HasOverlapsWithParallelLine(Line line2)
+        private bool HasOverlapsWithParallelLine(Line line)
         {
-            if (Orientation == OrientationEnum.Vertical && (Start.X != line2.Start.X ||
-                    (Math.Max(Start.Y, End.Y) < Math.Min(line2.Start.Y, line2.End.Y) || Math.Max(line2.Start.Y, line2.End.Y) < Math.Min(Start.Y, End.Y))))
+            if (Orientation == OrientationEnum.Vertical && (Start.X != line.Start.X ||
+                    (Math.Max(Start.Y, End.Y) < Math.Min(line.Start.Y, line.End.Y) || Math.Max(line.Start.Y, line.End.Y) < Math.Min(Start.Y, End.Y))))
                 return false;
-            else if (Orientation == OrientationEnum.Horizontal && (Start.Y != line2.Start.Y ||
-                (Math.Max(Start.X, End.X) < Math.Min(line2.Start.X, line2.End.X) || Math.Max(line2.Start.X, line2.End.X) < Math.Min(Start.X, End.X))))
+            else if (Orientation == OrientationEnum.Horizontal && (Start.Y != line.Start.Y ||
+                (Math.Max(Start.X, End.X) < Math.Min(line.Start.X, line.End.X) || Math.Max(line.Start.X, line.End.X) < Math.Min(Start.X, End.X))))
                 return false;
 
             return true;
