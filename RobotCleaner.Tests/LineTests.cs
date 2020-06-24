@@ -66,12 +66,24 @@ namespace RobotCleaner.Tests
         [InlineData(-22, 0, 154, 0, 145, 0, 1045, 0, 10)]
         [InlineData(153, -4, 153, 150, 153, 30, 153, 41, 12)]
         public void GetIntersections_ParallelLines_ReturnTrue(int line1StartX, int line1StartY, int line1EndX, int line1EndY,
-            int line2StartX, int line2StartY, int line2EndX, int line2EndY, int nrOfOverlaps)
+            int line2StartX, int line2StartY, int line2EndX, int line2EndY, int nrOfIntersections)
         {
             var line1 = new Line(new Coordinates(line1StartX, line1StartY), new Coordinates(line1EndX, line1EndY));
             var line2 = new Line(new Coordinates(line2StartX, line2StartY), new Coordinates(line2EndX, line2EndY));
 
-            Assert.Equal(nrOfOverlaps, line1.GetIntersections(line2).Count);
+            Assert.Equal(nrOfIntersections, line1.GetIntersections(line2).Count);
+        }
+
+        [Theory]
+        [InlineData(0, 1, 3, 1, 4, 1, 4, 3, 0)]
+        [InlineData(0, 1, 8, 1, 4, -1, 4, 3, 1)]
+        public void GetIntersections_NonParallelLines_ReturnTrue(int line1StartX, int line1StartY, int line1EndX, int line1EndY,
+            int line2StartX, int line2StartY, int line2EndX, int line2EndY, int nrOfIntersections)
+        {
+            var line1 = new Line(new Coordinates(line1StartX, line1StartY), new Coordinates(line1EndX, line1EndY));
+            var line2 = new Line(new Coordinates(line2StartX, line2StartY), new Coordinates(line2EndX, line2EndY));
+
+            Assert.Equal(nrOfIntersections, line1.GetIntersections(line2).Count);
         }
     }
 }

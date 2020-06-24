@@ -4,6 +4,13 @@ namespace RobotCleaner.Tests
 {
     public class CoordinatesComparerTests
     {
+        private readonly CoordinatesComparer _coordinatesComparer;
+
+        public CoordinatesComparerTests()
+        {
+            _coordinatesComparer = new CoordinatesComparer();
+        }
+
         [Theory]
         [InlineData(0, 3, 0, 3)]
         [InlineData(4, -22, 4, -22)]
@@ -13,7 +20,7 @@ namespace RobotCleaner.Tests
             var coordinates1 = new Coordinates(x1, y1);
             var coordinates2 = new Coordinates(x2, y2);
 
-            Assert.True(new CoordinatesComparer().Equals(coordinates1, coordinates2));
+            Assert.True(_coordinatesComparer.Equals(coordinates1, coordinates2));
         }
 
         [Theory]
@@ -25,7 +32,7 @@ namespace RobotCleaner.Tests
             var coordinates1 = new Coordinates(x1, y1);
             var coordinates2 = new Coordinates(x2, y2);
 
-            Assert.False(new CoordinatesComparer().Equals(coordinates1, coordinates2));
+            Assert.False(_coordinatesComparer.Equals(coordinates1, coordinates2));
         }
     }
 }

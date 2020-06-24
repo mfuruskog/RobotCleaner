@@ -6,6 +6,8 @@ namespace RobotCleaner
 {
     public class Line
     {
+        private readonly CoordinatesComparer _coordinatesComparer;
+
         public Line(Coordinates start, Coordinates end)
         {
             _coordinatesComparer = new CoordinatesComparer();
@@ -14,7 +16,6 @@ namespace RobotCleaner
             Orientation = Start.X == End.X ? OrientationEnum.Vertical : OrientationEnum.Horizontal;
         }
 
-        private readonly CoordinatesComparer _coordinatesComparer;
         public Coordinates Start { get; }
         public Coordinates End { get; }
         public OrientationEnum Orientation { get; }
