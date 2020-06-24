@@ -6,7 +6,7 @@ namespace RobotCleaner
     public class Robot
     {
         private readonly List<Line> _cleaningLines;
-        public Coordinates Position { get; private set; }
+        public Coordinates Position { get; }
 
         public int NrOfCleaningPlaces { get; private set; }
 
@@ -19,13 +19,13 @@ namespace RobotCleaner
 
         public void InitiateCleaning(List<RobotCommand> commands)
         {
-            for (int i = 0; i < commands.Count; i++)
+            foreach (var command in commands)
             {
                 var intersections = new List<Coordinates>();
 
                 var startPosition = new Coordinates(Position.X, Position.Y);
 
-                Move(commands[i]);
+                Move(command);
 
                 var endPosition = new Coordinates(Position.X, Position.Y);
                 var cleaningLine = new Line(startPosition, endPosition);
@@ -35,7 +35,7 @@ namespace RobotCleaner
                     intersections.AddRange(cleaningLine.GetIntersections(line));
                 }
 
-                NrOfCleaningPlaces += commands[i].Steps + 1 - intersections.Distinct(new CoordinatesComparer()).Count();
+                NrOfCleaningPlaces += command.Steps + 1 - intersections.Distinct(new CoordinatesComparer()).Count();
                 _cleaningLines.Add(cleaningLine);
 
             }
@@ -55,8 +55,6 @@ namespace RobotCleaner
                     break;
                 case 'W':
                     Position.X -= command.Steps;
-                    break;
-                default:
                     break;
             }
         }

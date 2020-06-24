@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace RobotCleaner
 {
@@ -7,9 +6,9 @@ namespace RobotCleaner
     {
         public bool Equals(Coordinates c1, Coordinates c2)
         {
-            if (Object.ReferenceEquals(c1, c2)) return true;
+            if (ReferenceEquals(c1, c2)) return true;
 
-            if (Object.ReferenceEquals(c1, null) || Object.ReferenceEquals(c2, null))
+            if (c1 is null || c2 is null)
                 return false;
 
             return c1.X == c2.X && c1.Y == c2.Y;
@@ -17,8 +16,6 @@ namespace RobotCleaner
 
         public int GetHashCode(Coordinates coordinates)
         {
-            if (Object.ReferenceEquals(coordinates, null)) return 0;
-
             int hashCoordinateX = coordinates.X.GetHashCode();
 
             int hashCoordinateY = coordinates.Y.GetHashCode();
